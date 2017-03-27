@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import pyedflib
-import utils
+from utils import *
 
 '''
     Inputs the signals from the file.
@@ -122,7 +122,7 @@ def generateFileData(filename):
 
 def main():
     # name of the file to read
-    filename = './chbmit/chb01/chb01_01.edf'
+    filename = '/Users/tanay/chbmit/pn6/chbmit/chb01/chb01_01.edf'
 
     # generate the data
     data = generateFileData(filename)
