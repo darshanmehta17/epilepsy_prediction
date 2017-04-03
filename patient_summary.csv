@@ -1,0 +1,5 @@
+File Name,File Start Time,File End Time,Number of Seizures in File,Seizure 1 Start Time,Seizure 1 End Time,Seizure 2 Start Time,Seizure 2 End Time,Seizure 3 Start Time,Seizure 3 End Time,Seizure 4 Start Time,Seizure 4 End Time,Duration
+ chb01_01.edf,1900-01-01 11:42:54,1900-01-01 12:42:54, 0,,,,,,,,,3600
+ chb01_02.edf,1900-01-01 12:42:57,1900-01-01 13:42:57, 0,,,,,,,,,3600
+ chb01_03.edf,1900-01-01 13:43:04,1900-01-01 14:43:04, 1, 2996 seconds, 3036 seconds,,,,,,,3600
+ chb01_04.edf,1900-01-01 14:43:12,1900-01-01 15:43:12, 1, 1467 seconds, 1494 seconds,,,,,,,3600

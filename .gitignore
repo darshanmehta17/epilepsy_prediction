@@ -1,2 +1,4 @@
 chbmit/
 *.pyc
+*.ipynb
+*.npy
