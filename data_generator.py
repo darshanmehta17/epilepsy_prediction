@@ -15,7 +15,7 @@ def getSignalFromFile(file):
     signals = np.zeros((f.signals_in_file,f.getNSamples()[0]))
     
     # copy the signal from the file to the array
-    for i in xrange(f.signals_in_file):
+    for i in range(f.signals_in_file):
         signals[i,:] = f.readSignal(i)
 
     # close the file and free the variable
@@ -117,7 +117,7 @@ def generateFileData(filename):
     signal_size = signals.shape[1] / sampling_rate
     
     return np.array([chi_T(signals, sampling_rate, time, m, freq_range, window_size, epoch_size) \
-                     for time in xrange(signal_size - window_size * epoch_size)])
+                     for time in range(int(np.floor(signal_size)) - window_size * epoch_size)])
         
 
 def main():
@@ -126,9 +126,6 @@ def main():
 
     # generate the data
     data = generateFileData(filename)
-
-    # do something with the data
-    print data
 
 if __name__ == '__main__':
     import sys
