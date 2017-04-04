@@ -3,15 +3,14 @@ import numpy as np
 import os
 
 from data_generator import *
-
-def read_summary_file(filename):
-	df = pd.read_csv(filename,parse_dates=[1,2])
-	return df
+from utils import *
 
 def main():
 	summary = read_summary_file('input/patient_summary.csv')
 	path = 'D:/Tanay_Project/chbmit/' # Path to dataset dir
 	output_dir = 'D:/Tanay_Project/processed/'
+	window_size = 3
+	epoch_size = 2
 
 	for i in range(len(summary)):
 		file_name = summary.iloc[i]['File Name']
@@ -33,19 +32,19 @@ def main():
 
 		target = np.zeros(duration-6)
 
-		data_path = os.path.join(output_dir,file_name,'_data')
-		target_path = os.path.join(output_dir,file_name,'_target')
+		data_path = os.path.join(output_dir,file_name+'_data')
+		target_path = os.path.join(output_dir,file_name+'_target')
 
 		if n_seizures == 0:
-			np.save(data_path,data)
+			np.save(data_pathN,data)
 			np.save(target_path,target)
 
 		for j in range(n_seizures):
 			start = summary.iloc[i]['Seizure '+str(j+1)+' Start Time']
 			end = summary.iloc[i]['Seizure '+str(j+1)+' End Time']
 
-			start = int(start.strip(' seconds'))
-			end = int(end.strip(' seconds'))
+			start = int(start.strip(' seconds'))-1
+			end = int(end.strip(' seconds'))-1
 
 			assert start <= end, "Seizure start time more than end time"
 
