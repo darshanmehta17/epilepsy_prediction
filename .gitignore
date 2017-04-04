@@ -1,7 +1,6 @@
 chbmit/
 *.pyc
 *.ipynb
-<<<<<<< HEAD
-=======
 *.npy
->>>>>>> 8dbd97dc1bfe0ff44933333bf5ba6d161c690861
+*.pkl
+
