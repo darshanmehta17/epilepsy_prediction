@@ -1,5 +1,5 @@
-from sklearn import metrics as mets
 import numpy as np
+from sklearn import metrics as mets
 
 
 def f1_score(y_true, y_pred):
