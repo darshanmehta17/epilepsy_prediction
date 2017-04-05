@@ -19,3 +19,25 @@ def read_summary_file(filename):
     """
     df = pd.read_csv(filename,parse_dates=[1,2])
     return df
+
+def setup_logging(logdir, name, log_level=logging.INFO):
+    """
+    Sets up logging
+    """
+    from datetime import datetime
+    from os import makedirs
+    from os.path import isdir
+
+    logger = logging.getLogger(name)
+    logger.setLevel(log_level)
+
+    if not isdir(logdir):
+        makedirs(logdir)
+
+    fh = logging.FileHandler(logdir+name+'.log' + datetime.today().isoformat())
+    fh.setLevel(log_level)
+    formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+    return logger

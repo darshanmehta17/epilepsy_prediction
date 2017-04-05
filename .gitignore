@@ -4,3 +4,4 @@ chbmit/
 *.npy
 *.pkl
 
+input/patient_summary.csv
