@@ -5,3 +5,7 @@ chbmit/
 *.pkl
 
 input/patient_summary.csv
+
+svmlight/
+
+logs/

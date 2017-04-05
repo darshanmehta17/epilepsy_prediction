@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.externals import joblib
+from sklearn.datasets import dump_svmlight_file
 import os
 
 from utils import *
@@ -49,6 +50,15 @@ def main(logger):
 	logger.info('f1_score = {:.3f}'.format(f1_score(y_test,y_p)*100))
 
 if __name__ == '__main__':
-	logger = setup_logging('logs/')
-	main()
+	logger = setup_logging('logs/','svm_train')
+	# main()
+	X_train, y_train, X_test, y_test = load_data('input/patient_summary.csv',
+		['chb01_04.edf'],
+		'processed/',
+		logger)
+
+	y_train[y_train == 0] = -1
+	y_test[y_test==0] = -1
+	dump_svmlight_file(X_train,y_train,'svmlight_train',zero_based=False)
+	dump_svmlight_file(X_test,y_test,'svmlight_test',zero_based=False)
 

@@ -1,5 +1,6 @@
 import numpy as np
-import pandas as pd 
+import pandas as pd
+import logging
 
 def floor_half(x):
     '''
@@ -34,7 +35,7 @@ def setup_logging(logdir, name, log_level=logging.INFO):
     if not isdir(logdir):
         makedirs(logdir)
 
-    fh = logging.FileHandler(logdir+name+'.log' + datetime.today().isoformat())
+    fh = logging.FileHandler(logdir + name + datetime.today().isoformat() + '.log')
     fh.setLevel(log_level)
     formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
     fh.setFormatter(formatter)
