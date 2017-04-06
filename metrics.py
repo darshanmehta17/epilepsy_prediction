@@ -3,7 +3,7 @@ from sklearn import metrics as mets
 
 
 def f1_score(y_true, y_pred):
-    print mets.f1_score(y_true, y_pred, average=None)
+    print(mets.f1_score(y_true, y_pred, average=None))
 
 def confusion_matrix(y_true, y_pred):
     data = zip(y_true, y_pred)   # Merge the data
@@ -26,15 +26,15 @@ def confusion_matrix(y_true, y_pred):
     accuracy = (tp + tn) * 100.0 / (tp + tn + fp + fn)
     
     # Display data
-    print "Confusion matrix:\n"
-    print "True positive:", tp
-    print "True negative:", tn
-    print "False positive:", fp
-    print "False negative:", fn
-    print "Precision:", precision
-    print "Recall:", recall
-    print "F1 Score:", f1
-    print "Accuracy:", accuracy
+    print("Confusion matrix:\n")
+    print("True positive:", tp)
+    print("True negative:", tn)
+    print("False positive:", fp)
+    print("False negative:", fn)
+    print("Precision:", precision)
+    print("Recall:", recall)
+    print("F1 Score:", f1)
+    print("Accuracy:", accuracy)
 
 def main():
     # Demo values
