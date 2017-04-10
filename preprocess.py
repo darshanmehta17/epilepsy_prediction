@@ -25,6 +25,14 @@ def main():
 
 		filepath = os.path.join(path,patient_name,file_name)
 		print(filepath)
+
+		data_path = os.path.join(output_dir,file_name+'_data.npy')
+		target_path = os.path.join(output_dir,file_name+'_target.npy')
+
+		if os.path.exists(data_path) and os.path.getsize(data_path)>0:
+			print("File exists, skipping")
+			continue
+
 		data = generateFileData(filepath)
 
 		# Sanity check to make sure size of data is correct
@@ -33,9 +41,6 @@ def main():
 		data = data.reshape(duration - input_size,-1)
 
 		target = np.zeros(duration - input_size)
-
-		data_path = os.path.join(output_dir,file_name+'_data')
-		target_path = os.path.join(output_dir,file_name+'_target')
 
 		if n_seizures == 0:
 			np.save(data_path,data)

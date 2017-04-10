@@ -17,6 +17,9 @@ def load_data(summary, path, logger):
 	train_files = [x.strip(' ') for x in summary_train['File Name']]
 	test_files = [x.strip(' ') for x in summary_test['File Name']]
 
+	logger.info('Len train files = '+str(len(train_files)))
+	logger.info('Len test files = '+str(len(test_files)))
+
 	X_train = np.load(path+train_files[0]+'_data.npy')
 	y_train = np.load(path+train_files[0]+'_target.npy')
 	X_test = np.load(path+test_files[0]+'_data.npy')
@@ -68,6 +71,9 @@ def dump_svmlight_dataset(summary, processed_dir, output_dir, logger):
 	X_train[X_train == np.inf] = 0
 	X_test[X_test == np.inf] = 0
 
+	X_train[X_train == -np.inf] = 0
+	X_test[X_test == -np.inf] = 0
+
 	dump_svmlight_file(X_train,y_train,output_dir+'svmlight_train.dat',zero_based=False)
 	dump_svmlight_file(X_test,y_test,output_dir+'svmlight_test.dat',zero_based=False)
 	logger.info('Saved files to '+output_dir)
@@ -76,7 +82,6 @@ if __name__ == '__main__':
 	logger = setup_logging('logs/','svm_train')
 	# main()
 	summary = read_summary_file('input/patient_summary.csv')
-
 	dump_svmlight_dataset(summary, 'processed/', 'svmlight/', logger)
 
 
