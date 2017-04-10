@@ -35,10 +35,17 @@ def setup_logging(logdir, name, log_level=logging.INFO):
     if not isdir(logdir):
         makedirs(logdir)
 
-    fh = logging.FileHandler(logdir + name + datetime.today().isoformat() + '.log')
+    # File handler
+    fh = logging.FileHandler(logdir + name + '.log')
     fh.setLevel(log_level)
     formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
+
+    # Console handler
+    ch = logging.StreamHandler()
+    ch.setLevel(log_level)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
 
     return logger

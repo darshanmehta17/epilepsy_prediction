@@ -68,6 +68,8 @@ def get_all_patients_summary(dataset_dir, output_dir):
     df = df.fillna("").applymap(strip_col)
     df.replace('',np.nan)
     df = get_duration(df)
+    df['Include'] = 1
+    df['Test'] = 0
     df.to_csv(output_dir+'patient_summary.csv',index=None)
 
 if __name__ == '__main__':
