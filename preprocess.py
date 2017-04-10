@@ -7,10 +7,12 @@ from utils import *
 
 def main():
 	summary = read_summary_file('input/patient_summary.csv')
-	path = 'D:/Tanay_Project/chbmit/' # Path to dataset dir
-	output_dir = 'D:/Tanay_Project/processed/'
+	#path = 'D:/Tanay_Project/chbmit/' # Path to dataset dir
+	path = '/Users/tanay/chbmit/pn6/chbmit/' # Path to dataset dir
+	output_dir = 'processed/'
 	window_size = 3
 	epoch_size = 2
+	input_size = window_size * epoch_size
 
 	for i in range(len(summary)):
 		file_name = summary.iloc[i]['File Name']
@@ -26,17 +28,17 @@ def main():
 		data = generateFileData(filepath)
 
 		# Sanity check to make sure size of data is correct
-		assert data.shape[0] == duration-6, "Data size mismatch"
+		assert data.shape[0] == (duration - input_size), "Data size mismatch"
 		print(data.shape)
-		data = data.reshape(duration-6,-1)
+		data = data.reshape(duration - input_size,-1)
 
-		target = np.zeros(duration-6)
+		target = np.zeros(duration - input_size)
 
 		data_path = os.path.join(output_dir,file_name+'_data')
 		target_path = os.path.join(output_dir,file_name+'_target')
 
 		if n_seizures == 0:
-			np.save(data_pathN,data)
+			np.save(data_path,data)
 			np.save(target_path,target)
 
 		for j in range(n_seizures):

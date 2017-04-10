@@ -19,6 +19,7 @@ def read_summary_file(filename):
     Reads the summary file from location
     """
     df = pd.read_csv(filename,parse_dates=[1,2])
+    df = df[df['Include']==1]
     return df
 
 def setup_logging(logdir, name, log_level=logging.INFO):
