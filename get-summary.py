@@ -73,6 +73,7 @@ def get_all_patients_summary(dataset_dir, output_dir):
     df.to_csv(output_dir+'patient_summary.csv',index=None)
 
 if __name__ == '__main__':
+    import sys
     if len(sys.argv) > 2:
         get_all_patients_summary(sys.argv[1],sys,argv[2])
     else:

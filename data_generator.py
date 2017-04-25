@@ -81,7 +81,7 @@ def chi_T(signal, sampling_rate, starting_time, m, freq_range, window_size, \
         sig_td = signal[:, time * sampling_rate : \
                         (time + epoch_size) * sampling_rate]
         x_t = []
-        for channel in range(sig_td.shape[0]):
+        for channel in range(min(23, sig_td.shape[0])):
             frq, sig_fd = getFFT(sig_td[channel], sampling_rate, freq_range)
             x_t.append(filter_energy(frq, sig_fd, m))
         chi_t.append(x_t)

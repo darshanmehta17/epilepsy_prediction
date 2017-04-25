@@ -26,6 +26,7 @@ def load_data(summary, path, logger):
 	y_test = np.load(path+test_files[0]+'_target.npy')
 
 	for file in train_files[1:]:
+		logger.info(file)
 		X_train = np.append(X_train, np.load(path+file+'_data.npy'),axis=0)
 		y_train = np.append(y_train, np.load(path+file+'_target.npy'),axis=0)
 	
@@ -82,8 +83,11 @@ if __name__ == '__main__':
 	logger = setup_logging('logs/','svm_train')
 	# main()
 	summary = read_summary_file('input/patient_summary.csv')
-	dump_svmlight_dataset(summary, 'processed/', 'svmlight/', logger)
+	# dump_svmlight_dataset(summary, 'D:/Tanay_Project/processed/', 'D:/Tanay_Project/svmlight/', logger)
+	# os.system('D:/Tanay_Project/svmlight/svm_learn.exe D:/Tanay_Project/svmlight/svmlight_train.dat D:/Tanay_Project/svmlight/model > train.log')
+	# os.system('D:/Tanay_Project/svmlight/svm_classify.exe D:/Tanay_Project/svmlight/svmlight_test.dat D:/Tanay_Project/svmlight/model > test.log')
 
+	
 
 	
 
