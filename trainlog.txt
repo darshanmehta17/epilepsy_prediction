@@ -1,0 +1,22 @@
+Training 11 April 
+
+Optimization finished (818 misclassified, maxdiff=0.00096).
+Runtime in cpu-seconds: 1288.00
+Number of SV: 2850 (including 2635 at upper bound)
+L1 loss: loss=2025.16206
+Norm of weight vector: |w|=0.09208
+Norm of longest example vector: |x|=903.90795
+Estimated VCdim of classifier: VCdim<=6928.95793
+Computing XiAlpha-estimates...done
+Runtime for XiAlpha-estimates in cpu-seconds: 0.48
+XiAlpha-estimate of the error: error<=0.37% (rho=1.00,depth=0)
+XiAlpha-estimate of the recall: recall=>17.27% (rho=1.00,depth=0)
+XiAlpha-estimate of the precision: precision=>16.54% (rho=1.00,depth=0)
+Number of kernel evaluations: 7928945
+Writing model file...done
+
+Testing 
+
+Runtime (without IO) in cpu-seconds: 0.02
+Accuracy on test set: 99.84% (45528 correct, 73 incorrect, 45601 total)
+Precision/recall on test set: 70.59%/15.00%
