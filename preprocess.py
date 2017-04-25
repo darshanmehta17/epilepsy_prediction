@@ -6,9 +6,9 @@ from data_generator import *
 from utils import *
 
 def main():
-	summary = read_summary_file('input/patient_summary.csv')
+	summary = read_summary_file('./input/patient_summary.csv')
 	#path = 'D:/Tanay_Project/chbmit/' # Path to dataset dir
-	path = '/Users/tanay/chbmit/pn6/chbmit/' # Path to dataset dir
+	path = './chbmit/' # Path to dataset dir
 	output_dir = 'processed/'
 	window_size = 3
 	epoch_size = 2

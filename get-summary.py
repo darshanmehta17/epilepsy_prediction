@@ -76,6 +76,6 @@ if __name__ == '__main__':
     if len(sys.argv) > 2:
         get_all_patients_summary(sys.argv[1],sys,argv[2])
     else:
-        get_all_patients_summary('/Users/tanay/chbmit/pn6/chbmit/','input/')
+        get_all_patients_summary('./chbmit/','input/')
 
         
