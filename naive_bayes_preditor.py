@@ -6,6 +6,13 @@ from metrics import *
 from utils import *
 
 
+def naive_bayes(X_train, y_train, X_test, y_test, logger):
+	gnb = GaussianNB()
+	y_pred = gnb.fit(X_train, y_train).predict(X_test)
+	[accuracy, recall, precision, f1_score] = evaluate_model(y_test, y_pred)
+	dump_data_to_csv(np.array([accuracy, recall, precision, f1_score]), 'perf_naive_bayes.csv')
+
+
 def load_data(summary, path, logger):
 
 	summary = summary[summary['Include'] == 1]
@@ -37,6 +44,7 @@ def load_data(summary, path, logger):
 
 	return X_train, y_train, X_test, y_test
 
+
 logger = setup_logging('logs/','naive_bayes')
 summary = read_summary_file('./input/patient_summary.csv')
 X_train, y_train, X_test, y_test = load_data(summary, './processed/', logger)
@@ -60,4 +68,4 @@ print("Number of mislabeled points out of a total %d points : %d" \
        % (X_test.shape[0],(y_test != y_pred).sum()))
 
 f1_score(y_test, y_pred)
-confusion_matrix(y_test, y_pred)
+evaluate_model(y_test, y_pred, true)
