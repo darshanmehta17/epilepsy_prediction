@@ -5,7 +5,7 @@ from sklearn import metrics as mets
 def f1_score(y_true, y_pred):
     print(mets.f1_score(y_true, y_pred, average=None))
 
-def confusion_matrix(y_true, y_pred):
+def evaluate_model(y_true, y_pred, debug = false):
     data = zip(y_true, y_pred)   # Merge the data
     tp = fp = tn = fn = 0.0      # Initialize value
 
@@ -25,25 +25,19 @@ def confusion_matrix(y_true, y_pred):
     f1 = 2 * (precision * recall) / (precision + recall)
     accuracy = (tp + tn) * 100.0 / (tp + tn + fp + fn)
     
-    # Display data
-    print("Confusion matrix:\n")
-    print("True positive:", tp)
-    print("True negative:", tn)
-    print("False positive:", fp)
-    print("False negative:", fn)
-    print("Precision:", precision)
-    print("Recall:", recall)
-    print("F1 Score:", f1)
-    print("Accuracy:", accuracy)
-
-
-# def print_positive_accuracy(y_true, y_pred):
-#     assert()
-#     len = len(y_true)
-#     count = 0
-#     for i in xrange(len):
-#         if y_true
-
+    # Display data if debugging is true
+    if debug:
+        print("Confusion matrix:\n")
+        print("True positive:", tp)
+        print("True negative:", tn)
+        print("False positive:", fp)
+        print("False negative:", fn)
+        print("Precision:", precision)
+        print("Recall:", recall)
+        print("F1 Score:", f1)
+        print("Accuracy:", accuracy)
+    
+    return accuracy, recall, precision, f1_score
 
 
 def main():
@@ -52,7 +46,7 @@ def main():
     y_pred = [-1, 1, 1, -1, -1, 1]
 
     f1_score(y_true, y_pred)
-    confusion_matrix(y_true, y_pred)
+    evaluate_model(y_true, y_pred, true)
 
 if __name__ == '__main__':
     import sys
