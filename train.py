@@ -82,12 +82,25 @@ def dump_svmlight_dataset(summary, processed_dir, output_dir, logger):
 if __name__ == '__main__':
 	logger = setup_logging('logs/','svm_train')
 	# main()
-	summary = read_summary_file('input/patient_summary.csv')
-	# dump_svmlight_dataset(summary, 'D:/Tanay_Project/processed/', 'D:/Tanay_Project/svmlight/', logger)
-	# os.system('D:/Tanay_Project/svmlight/svm_learn.exe D:/Tanay_Project/svmlight/svmlight_train.dat D:/Tanay_Project/svmlight/model > train.log')
-	# os.system('D:/Tanay_Project/svmlight/svm_classify.exe D:/Tanay_Project/svmlight/svmlight_test.dat D:/Tanay_Project/svmlight/model > test.log')
-
+	summary = pd.read_csv('input/patient_summary.csv')
+	summary['File Name'] = summary['File Name'].str.strip(' ')
+	summary.index = summary['File Name']
+	names = summary['File Name'].dropna()
 	
+
+	patients = ['chb03', 'chb05', 'chb06', 'chb07']
+
+	for patient in patients:
+		summary.loc[:, 'Include'] = 0
+		print(patient)
+		files = names[names.str.contains(patient)]
+		#files = files.replace(' ','')
+		summary.loc[files, 'Include'] = 1
+
+		dump_svmlight_dataset(summary, 'D:/Tanay_Project/processed/', 'D:/Tanay_Project/svmlight/', logger)
+		os.system('D:/Tanay_Project/svmlight/svm_learn.exe D:/Tanay_Project/svmlight/svmlight_train.dat D:/Tanay_Project/svmlight/model > train'+patient+'.log')
+		os.system('D:/Tanay_Project/svmlight/svm_classify.exe D:/Tanay_Project/svmlight/svmlight_test.dat D:/Tanay_Project/svmlight/model > test'+patient+'.log')
+
 
 	
 

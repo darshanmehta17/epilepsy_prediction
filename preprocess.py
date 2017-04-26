@@ -10,6 +10,7 @@ def main():
 	#path = 'D:/Tanay_Project/chbmit/' # Path to dataset dir
 	path = './chbmit/' # Path to dataset dir
 	output_dir = 'processed/'
+
 	window_size = 3
 	epoch_size = 2
 	input_size = window_size * epoch_size
@@ -21,7 +22,7 @@ def main():
 		patient_name = file_name.split('_')[0]
 		patient_name = patient_name.strip(' ')
 		duration = summary.iloc[i]['Duration']
-		n_seizures = summary.iloc[i]['Number of Seizures in File']
+		n_seizures = int(summary.iloc[i]['Number of Seizures in File'])
 
 		filepath = os.path.join(path,patient_name,file_name)
 		print(filepath)
@@ -29,9 +30,9 @@ def main():
 		data_path = os.path.join(output_dir,file_name+'_data.npy')
 		target_path = os.path.join(output_dir,file_name+'_target.npy')
 
-		if os.path.exists(data_path) and os.path.getsize(data_path)>0:
-			print("File exists, skipping")
-			continue
+		# if os.path.exists(data_path) and os.path.getsize(data_path)>0:
+		# 	print("File exists, skipping")
+		# 	continue
 
 		data = generateFileData(filepath)
 
