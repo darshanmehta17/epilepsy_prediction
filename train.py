@@ -79,6 +79,29 @@ def dump_svmlight_dataset(summary, processed_dir, output_dir, logger):
 	dump_svmlight_file(X_test,y_test,output_dir+'svmlight_test.dat',zero_based=False)
 	logger.info('Saved files to '+output_dir)
 
+def svm_light(X_train, y_train, X_test, y_test, logger, index):
+    """
+    index: is an integer that should be unique every time you run this function so that the files
+    are not overwritten
+    """
+    dump_svmlight_file(X_train,y_train'svmlight/svmlight_train.dat',zero_based=False)
+    dump_svmlight_file(X_test,y_test,'svmlight/svmlight_test.dat',zero_based=False)
+    logger.info('Saved files to '+output_dir)
+    os.system('svmlight/svm_learn.exe svmlight/svmlight_train.dat svmlight/model > train'+index+'.log')
+    logger.info("learning done")
+    os.system('svmlight/svm_classify.exe svmlight/svmlight_test.dat svmlight/model > test'+index+'.log')
+    logger.info("classifying done")
+
+def random_forest(X_train, y_train, X_test, y_test, logger=None):
+    if os.path.exists('results_rf.csv'):
+        results = pd.read_csv('results.csv',index_col=[0])
+    else:
+        results = pd.DataFrame()
+    model = RandomForestClassifier()
+    p, a, r = evaluate_model(model,X_train, y_train, X_test, y_test)
+    results = results.append(pd.Series([p,a,r]),ignore_index=True)
+    results.to_csv('results.csv')
+
 if __name__ == '__main__':
 	logger = setup_logging('logs/','svm_train')
 	# main()
@@ -99,7 +122,9 @@ if __name__ == '__main__':
 
 		dump_svmlight_dataset(summary, 'D:/Tanay_Project/processed/', 'D:/Tanay_Project/svmlight/', logger)
 		os.system('D:/Tanay_Project/svmlight/svm_learn.exe D:/Tanay_Project/svmlight/svmlight_train.dat D:/Tanay_Project/svmlight/model > train'+patient+'.log')
+		logger.info("learning done")
 		os.system('D:/Tanay_Project/svmlight/svm_classify.exe D:/Tanay_Project/svmlight/svmlight_test.dat D:/Tanay_Project/svmlight/model > test'+patient+'.log')
+		logger.info("classifying done")
 
 
 	
