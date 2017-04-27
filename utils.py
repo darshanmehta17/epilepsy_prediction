@@ -12,9 +12,10 @@ def dump_data_to_csv(metrics, filename):
     df = pd.DataFrame(np_array)
     header = ['accuracy', 'recall', 'precision', 'f1_score']
     if not os.path.isfile(filename):
-        df.to_csv(filename, header ='column_names')
+        df.to_csv(filename, header='column_names')
     else:
-        df.to_csv(filename, mode = 'a', header=False)
+        df.to_csv(filename, mode='a', header=False)
+
 
 def floor_half(x):
     '''
@@ -22,19 +23,22 @@ def floor_half(x):
     '''
     return 0.5 * np.floor(2.0 * x)
 
+
 def index_of(arr, k):
     '''
     Returns the index of the value in the array.
     '''
     return np.nonzero(arr == k)[0][0]
 
+
 def read_summary_file(filename):
     """
     Reads the summary file from location
     """
-    df = pd.read_csv(filename,parse_dates=[1,2])
-    df = df[df['Include']==1]
+    df = pd.read_csv(filename, parse_dates=[1, 2])
+    df = df[df['Include'] == 1]
     return df
+
 
 def setup_logging(logdir, name, log_level=logging.INFO):
     """
@@ -64,6 +68,8 @@ def setup_logging(logdir, name, log_level=logging.INFO):
     logger.addHandler(ch)
 
     return logger
+
+
 def unison_shuffled_copies(a, b):
     assert len(a) == len(
         b), "Length of the arrays to be shuffled is not the same"

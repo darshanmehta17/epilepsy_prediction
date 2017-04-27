@@ -5,7 +5,7 @@ from sklearn import metrics as mets
 def f1_score(y_true, y_pred):
     print(mets.f1_score(y_true, y_pred, average=None))
 
-def evaluate_model(y_true, y_pred, debug = false):
+def evaluate_model(y_true, y_pred, debug=False):
     data = zip(y_true, y_pred)   # Merge the data
     tp = fp = tn = fn = 0.0      # Initialize value
 
@@ -46,7 +46,7 @@ def main():
     y_pred = [-1, 1, 1, -1, -1, 1]
 
     f1_score(y_true, y_pred)
-    evaluate_model(y_true, y_pred, true)
+    evaluate_model(y_true, y_pred, True)
 
 if __name__ == '__main__':
     import sys

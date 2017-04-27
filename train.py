@@ -8,124 +8,137 @@ import os
 
 from utils import *
 
+
 def load_data(summary, path, logger):
 
-	summary = summary[summary['Include'] == 1]
-	summary_train = summary[summary['Test'] == 0]
-	summary_test = summary[summary['Test'] == 1]
+    summary = summary[summary['Include'] == 1]
+    summary_train = summary[summary['Test'] == 0]
+    summary_test = summary[summary['Test'] == 1]
 
-	train_files = [x.strip(' ') for x in summary_train['File Name']]
-	test_files = [x.strip(' ') for x in summary_test['File Name']]
+    train_files = [x.strip(' ') for x in summary_train['File Name']]
+    test_files = [x.strip(' ') for x in summary_test['File Name']]
 
-	logger.info('Len train files = '+str(len(train_files)))
-	logger.info('Len test files = '+str(len(test_files)))
+    logger.info('Len train files = ' + str(len(train_files)))
+    logger.info('Len test files = ' + str(len(test_files)))
 
-	X_train = np.load(path+train_files[0]+'_data.npy')
-	y_train = np.load(path+train_files[0]+'_target.npy')
-	X_test = np.load(path+test_files[0]+'_data.npy')
-	y_test = np.load(path+test_files[0]+'_target.npy')
+    X_train = np.load(path + train_files[0] + '_data.npy')
+    y_train = np.load(path + train_files[0] + '_target.npy')
+    X_test = np.load(path + test_files[0] + '_data.npy')
+    y_test = np.load(path + test_files[0] + '_target.npy')
 
-	for file in train_files[1:]:
-		logger.info(file)
-		X_train = np.append(X_train, np.load(path+file+'_data.npy'),axis=0)
-		y_train = np.append(y_train, np.load(path+file+'_target.npy'),axis=0)
-	
-	for file in test_files[1:]:
-		X_test = np.append(X_test,np.load(path+file+'_data.npy'),axis=0)
-		y_test = np.append(y_test,np.load(path+file+'_target.npy'),axis=0)
+    for file in train_files[1:]:
+        logger.info(file)
+        X_train = np.append(X_train, np.load(
+            path + file + '_data.npy'), axis=0)
+        y_train = np.append(y_train, np.load(
+            path + file + '_target.npy'), axis=0)
 
-	logger.info('Loaded Data')
-	logger.info('Train data shape = '+str(X_train.shape) + str(y_train.shape))
-	logger.info('Test data shape = '+str(X_test.shape) + str(y_test.shape))
+    for file in test_files[1:]:
+        X_test = np.append(X_test, np.load(path + file + '_data.npy'), axis=0)
+        y_test = np.append(y_test, np.load(
+            path + file + '_target.npy'), axis=0)
 
-	return X_train, y_train, X_test, y_test
+    logger.info('Loaded Data')
+    logger.info('Train data shape = ' +
+                str(X_train.shape) + str(y_train.shape))
+    logger.info('Test data shape = ' + str(X_test.shape) + str(y_test.shape))
+
+    return X_train, y_train, X_test, y_test
+
 
 def main(logger):
-	
-	file_summary = 'input/patient_summary.csv'
-	test_files = ['chb01_26.edf','chb01_27.edf','chb01_29.edf']
-	path = 'D:/Tanay_Project/processed/'
 
-	X_train, y_train, X_test, y_test = load_data(file_summary,test_files,path,logger)
+    file_summary = 'input/patient_summary.csv'
+    test_files = ['chb01_26.edf', 'chb01_27.edf', 'chb01_29.edf']
+    path = 'D:/Tanay_Project/processed/'
 
-	model = SVC()
-	model.fit(X_train,y_train)
-	joblib.dump(model,'svm.pkl')
-	# model = joblib.load('svm.pkl')
+    X_train, y_train, X_test, y_test = load_data(
+        file_summary, test_files, path, logger)
 
-	logger.info('Training Done')
+    model = SVC()
+    model.fit(X_train, y_train)
+    joblib.dump(model, 'svm.pkl')
+    # model = joblib.load('svm.pkl')
 
-	y_p = model.predict(X_test)
-	logger.info('accuracy_score = {:.3f}'.format(accuracy_score(y_test,y_p)*100))
-	logger.info('f1_score = {:.3f}'.format(f1_score(y_test,y_p)*100))
+    logger.info('Training Done')
+
+    y_p = model.predict(X_test)
+    logger.info('accuracy_score = {:.3f}'.format(
+        accuracy_score(y_test, y_p) * 100))
+    logger.info('f1_score = {:.3f}'.format(f1_score(y_test, y_p) * 100))
+
 
 def dump_svmlight_dataset(summary, processed_dir, output_dir, logger):
-	X_train, y_train, X_test, y_test = load_data(summary,
-		processed_dir,
-		logger)
-	
-	# convert target values to -1 | 1
-	y_train[y_train == 0] = -1
-	y_test[y_test==0] = -1
+    X_train, y_train, X_test, y_test = load_data(summary,
+                                                 processed_dir,
+                                                 logger)
 
-	# convert infs to 0
-	X_train[X_train == np.inf] = 0
-	X_test[X_test == np.inf] = 0
+    # convert target values to -1 | 1
+    y_train[y_train == 0] = -1
+    y_test[y_test == 0] = -1
 
-	X_train[X_train == -np.inf] = 0
-	X_test[X_test == -np.inf] = 0
+    # convert infs to 0
+    X_train[X_train == np.inf] = 0
+    X_test[X_test == np.inf] = 0
 
-	dump_svmlight_file(X_train,y_train,output_dir+'svmlight_train.dat',zero_based=False)
-	dump_svmlight_file(X_test,y_test,output_dir+'svmlight_test.dat',zero_based=False)
-	logger.info('Saved files to '+output_dir)
+    X_train[X_train == -np.inf] = 0
+    X_test[X_test == -np.inf] = 0
+
+    dump_svmlight_file(X_train, y_train, output_dir +
+                       'svmlight_train.dat', zero_based=False)
+    dump_svmlight_file(X_test, y_test, output_dir +
+                       'svmlight_test.dat', zero_based=False)
+    logger.info('Saved files to ' + output_dir)
+
 
 def svm_light(X_train, y_train, X_test, y_test, logger, index):
     """
     index: is an integer that should be unique every time you run this function so that the files
     are not overwritten
     """
-    dump_svmlight_file(X_train,y_train'svmlight/svmlight_train.dat',zero_based=False)
-    dump_svmlight_file(X_test,y_test,'svmlight/svmlight_test.dat',zero_based=False)
-    logger.info('Saved files to '+output_dir)
-    os.system('svmlight/svm_learn.exe svmlight/svmlight_train.dat svmlight/model > train'+index+'.log')
+    dump_svmlight_file(X_train, y_train'svmlight/svmlight_train.dat', zero_based=False)
+    dump_svmlight_file(
+        X_test, y_test, 'svmlight/svmlight_test.dat', zero_based=False)
+    logger.info('Saved files to ' + output_dir)
+    os.system(
+        'svmlight/svm_learn.exe svmlight/svmlight_train.dat svmlight/model > train' + index + '.log')
     logger.info("learning done")
-    os.system('svmlight/svm_classify.exe svmlight/svmlight_test.dat svmlight/model > test'+index+'.log')
+    os.system(
+        'svmlight/svm_classify.exe svmlight/svmlight_test.dat svmlight/model > test' + index + '.log')
     logger.info("classifying done")
+
 
 def random_forest(X_train, y_train, X_test, y_test, logger=None):
     if os.path.exists('results_rf.csv'):
-        results = pd.read_csv('results.csv',index_col=[0])
+        results = pd.read_csv('results.csv', index_col=[0])
     else:
         results = pd.DataFrame()
     model = RandomForestClassifier()
-    p, a, r = evaluate_model(model,X_train, y_train, X_test, y_test)
-    results = results.append(pd.Series([p,a,r]),ignore_index=True)
+    p, a, r = evaluate_model(model, X_train, y_train, X_test, y_test)
+    results = results.append(pd.Series([p, a, r]), ignore_index=True)
     results.to_csv('results.csv')
 
+
 if __name__ == '__main__':
-	logger = setup_logging('logs/','svm_train')
-	# main()
-	summary = pd.read_csv('input/patient_summary.csv')
-	summary['File Name'] = summary['File Name'].str.strip(' ')
-	summary.index = summary['File Name']
-	names = summary['File Name'].dropna()
-	
+    logger = setup_logging('logs/', 'svm_train')
+    # main()
+    summary = pd.read_csv('input/patient_summary.csv')
+    summary['File Name'] = summary['File Name'].str.strip(' ')
+    summary.index = summary['File Name']
+    names = summary['File Name'].dropna()
 
-	patients = ['chb03', 'chb05', 'chb06', 'chb07']
+    patients = ['chb03', 'chb05', 'chb06', 'chb07']
 
-	for patient in patients:
-		summary.loc[:, 'Include'] = 0
-		print(patient)
-		files = names[names.str.contains(patient)]
-		#files = files.replace(' ','')
-		summary.loc[files, 'Include'] = 1
+    for patient in patients:
+        summary.loc[:, 'Include'] = 0
+        print(patient)
+        files = names[names.str.contains(patient)]
+        #files = files.replace(' ','')
+        summary.loc[files, 'Include'] = 1
 
-		dump_svmlight_dataset(summary, 'D:/Tanay_Project/processed/', 'D:/Tanay_Project/svmlight/', logger)
-		os.system('D:/Tanay_Project/svmlight/svm_learn.exe D:/Tanay_Project/svmlight/svmlight_train.dat D:/Tanay_Project/svmlight/model > train'+patient+'.log')
-		logger.info("learning done")
-		os.system('D:/Tanay_Project/svmlight/svm_classify.exe D:/Tanay_Project/svmlight/svmlight_test.dat D:/Tanay_Project/svmlight/model > test'+patient+'.log')
-		logger.info("classifying done")
-
-
-	
-
+        dump_svmlight_dataset(
+            summary, 'D:/Tanay_Project/processed/', 'D:/Tanay_Project/svmlight/', logger)
+        os.system('D:/Tanay_Project/svmlight/svm_learn.exe D:/Tanay_Project/svmlight/svmlight_train.dat D:/Tanay_Project/svmlight/model > train' + patient + '.log')
+        logger.info("learning done")
+        os.system('D:/Tanay_Project/svmlight/svm_classify.exe D:/Tanay_Project/svmlight/svmlight_test.dat D:/Tanay_Project/svmlight/model > test' + patient + '.log')
+        logger.info("classifying done")
