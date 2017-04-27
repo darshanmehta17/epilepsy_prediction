@@ -21,7 +21,7 @@ def evaluate_model(y_true, y_pred, debug=False):
             fp += 1
 
     recall = tp / (tp + fn)
-    precision = fp / (fp + tp)
+    precision = tp / (fp + tp)
     f1 = 2 * (precision * recall) / (precision + recall)
     accuracy = (tp + tn) / (tp + tn + fp + fn)
     
