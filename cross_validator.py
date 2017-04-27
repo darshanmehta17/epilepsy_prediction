@@ -50,9 +50,9 @@ def k_cross_validator(X, y, k, logger):
 
         # Creating the splits
         X_test = X[indices[itr]]
-        X_train = np.delete(X, indices[itr])
+        X_train = np.delete(X, indices[itr], axis=0)
         y_test = y[indices[itr]]
-        y_train = np.delete(y, indices[itr])
+        y_train = np.delete(y, indices[itr], axis=0)
 
         logger.info('Running Naive Bayes...')
         naive_bayes(X_train, y_train, X_test, y_test, logger)
@@ -69,7 +69,7 @@ def k_cross_validator(X, y, k, logger):
 def main():
     logger = setup_logging('logs/', 'cross_validation')
     summary = read_summary_file('./input/patient_summary.csv')
-    X, y = load_data(summary, './processed/', logger)
+    X, y = load_data(summary, 'D:/Tanay_Project/processed/', logger)
 
     k_cross_validator(X, y, 10, logger)
 

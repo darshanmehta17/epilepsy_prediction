@@ -1,11 +1,14 @@
-import pandas as pd
-import numpy as np
-from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score, f1_score
-from sklearn.externals import joblib
-from sklearn.datasets import dump_svmlight_file
 import os
 
+import numpy as np
+import pandas as pd
+from sklearn.datasets import dump_svmlight_file
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.externals import joblib
+from sklearn.metrics import accuracy_score, f1_score
+from sklearn.svm import SVC
+
+from metrics import *
 from utils import *
 
 
@@ -91,32 +94,43 @@ def dump_svmlight_dataset(summary, processed_dir, output_dir, logger):
     logger.info('Saved files to ' + output_dir)
 
 
-def svm_light(X_train, y_train, X_test, y_test, logger, index):
+def svm_light(X_train, y_train, X_test, y_test, logger):
     """
     index: is an integer that should be unique every time you run this function so that the files
     are not overwritten
     """
-    dump_svmlight_file(X_train, y_train'svmlight/svmlight_train.dat', zero_based=False)
+    dump_svmlight_file(X_train, y_train, 'svmlight/svmlight_train.dat', zero_based=False)
     dump_svmlight_file(
         X_test, y_test, 'svmlight/svmlight_test.dat', zero_based=False)
-    logger.info('Saved files to ' + output_dir)
-    os.system(
-        'svmlight/svm_learn.exe svmlight/svmlight_train.dat svmlight/model > train' + index + '.log')
+    logger.info('Saved files')
+
+
+    train_path = os.path.join('svmlight','svm_learn.exe')
+    test_path = os.path.join('svmlight','svm_classify.exe')
+
+    os.system(train_path + ' svmlight/svmlight_train.dat svmlight/model > train.log')
     logger.info("learning done")
-    os.system(
-        'svmlight/svm_classify.exe svmlight/svmlight_test.dat svmlight/model > test' + index + '.log')
+    os.system(test_path + ' svmlight/svmlight_test.dat svmlight/model > test.log')
     logger.info("classifying done")
+    with open('test.log') as f:
+        contents = f.read()
+    contents = contents.split('\n')
+    precision, recall = contents[-2].split(': ')[1].replace('%','').split('/')
+    precision = float(precision)/100
+    recall = float(recall)/100
+    accuracy = float(contents[-3].split(' ')[4].replace('%',''))/100
+    f1 = 2 * (precision * recall) / (precision + recall)
+    dump_data_to_csv(
+        np.array([accuracy, recall, precision, f1]), 'perf_svm_light.csv')
+
 
 
 def random_forest(X_train, y_train, X_test, y_test, logger=None):
-    if os.path.exists('results_rf.csv'):
-        results = pd.read_csv('results.csv', index_col=[0])
-    else:
-        results = pd.DataFrame()
     model = RandomForestClassifier()
-    p, a, r = evaluate_model(model, X_train, y_train, X_test, y_test)
-    results = results.append(pd.Series([p, a, r]), ignore_index=True)
-    results.to_csv('results.csv')
+    y_pred = model.fit(X_train, y_train).predict(X_test)
+    [accuracy, recall, precision, f1_score] = evaluate_model(y_test, y_pred)
+    dump_data_to_csv(
+        np.array([accuracy, recall, precision, f1_score]), 'perf_random_forest.csv')
 
 
 if __name__ == '__main__':
@@ -128,6 +142,7 @@ if __name__ == '__main__':
     names = summary['File Name'].dropna()
 
     patients = ['chb03', 'chb05', 'chb06', 'chb07']
+    summary = summary[summary.Include == 1]
 
     for patient in patients:
         summary.loc[:, 'Include'] = 0

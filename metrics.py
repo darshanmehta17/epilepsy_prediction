@@ -23,7 +23,7 @@ def evaluate_model(y_true, y_pred, debug=False):
     recall = tp / (tp + fn)
     precision = fp / (fp + tp)
     f1 = 2 * (precision * recall) / (precision + recall)
-    accuracy = (tp + tn) * 100.0 / (tp + tn + fp + fn)
+    accuracy = (tp + tn) / (tp + tn + fp + fn)
     
     # Display data if debugging is true
     if debug:
@@ -37,7 +37,7 @@ def evaluate_model(y_true, y_pred, debug=False):
         print("F1 Score:", f1)
         print("Accuracy:", accuracy)
     
-    return accuracy, recall, precision, f1_score
+    return accuracy, recall, precision, f1
 
 
 def main():
