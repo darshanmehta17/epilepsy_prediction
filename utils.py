@@ -64,3 +64,8 @@ def setup_logging(logdir, name, log_level=logging.INFO):
     logger.addHandler(ch)
 
     return logger
+def unison_shuffled_copies(a, b):
+    assert len(a) == len(
+        b), "Length of the arrays to be shuffled is not the same"
+    p = np.random.permutation(len(a))
+    return a[p], b[p]
