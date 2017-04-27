@@ -9,10 +9,10 @@ def dump_data_to_csv(metrics, filename):
     '''
     Saves the numpy array metrics to the given filename in csv format
     '''
-    df = pd.DataFrame(np_array)
+    df = pd.DataFrame(metrics)
     header = ['accuracy', 'recall', 'precision', 'f1_score']
     if not os.path.isfile(filename):
-        df.to_csv(filename, header='column_names')
+        df.to_csv(filename, header=header)
     else:
         df.to_csv(filename, mode='a', header=False)
 
