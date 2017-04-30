@@ -32,18 +32,18 @@ def index_of(arr, k):
 
 
 def read_summary_file(filename):
-    """
+    '''
     Reads the summary file from location
-    """
+    '''
     df = pd.read_csv(filename, parse_dates=[1, 2])
     df = df[df['Include'] == 1]
     return df
 
 
 def setup_logging(logdir, name, log_level=logging.INFO):
-    """
+    '''
     Sets up logging
-    """
+    '''
     from datetime import datetime
     from os import makedirs
     from os.path import isdir
@@ -71,6 +71,9 @@ def setup_logging(logdir, name, log_level=logging.INFO):
 
 
 def unison_shuffled_copies(a, b):
+    '''
+    Shuffles both arrays in a similar fashion
+    '''
     assert len(a) == len(
         b), "Length of the arrays to be shuffled is not the same"
     p = np.random.permutation(len(a))
