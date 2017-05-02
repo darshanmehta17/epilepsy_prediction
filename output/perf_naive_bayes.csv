@@ -1,0 +1,4 @@
+,accuracy,recall,precision,f1_score
+Naïve bayes,78.23%,78.18%,1.00%,1.97%
+Svm,99.84%,45.09%,97.07%,61.54%
+Random forest,99.83%,41.03%,99.18%,57.95%
