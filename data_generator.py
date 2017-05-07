@@ -30,7 +30,6 @@ def getSignalFromFile(file):
 def getFFT(signal, sampling_rate, freq_range):
     n = len(signal)
     k = np.arange(n)
-    Ts = 1.0 / sampling_rate; # sampling interval
     T = n / sampling_rate
     frq = k / T # two sides frequency range
     Y = np.fft.fft(signal) / n # fft computing and normalization
